@@ -1,4 +1,7 @@
+#include "sharedMemoryHelper.h"
+
 #include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
 #include <sys/wait.h>
 #include <sys/types.h>
@@ -19,47 +22,34 @@ void decreaseBankBalance(int *accounts, int accountNumber, int amountOfMoney) {
 
 int main(int argc, char *argv[]) {
     int *accounts;
-
-    //get shared block
-    key_t key = ftok("zad1.c", 0);
-    if(key == -1) printf("shared memory error\n");
-    int sharedBlockId = shmget(key, 4096, 0644 | IPC_CREAT);
-
+    int* sharedBlockId = getSharedBlock();
 
     int id = fork();
-	switch(id) {
+    switch(id) {
 		case -1:
 			printf("Error with fork");
 			return 1;
 			break;
 		case 0: // child
-
-            //attach memory block
-            accounts = shmat(sharedBlockId, NULL, 0);
+            accounts = attachMemoryBlock(sharedBlockId);
 
             increaseBankBalance(accounts, 0, 100);
             readBankBalance(accounts, 0);
 
-            //detach memory block
-            shmdt(accounts);
+            detachMemoryBlock(accounts);
 
 			break;
 		default: // parent
-
-            //attach memory block
-            accounts = shmat(sharedBlockId, NULL, 0);
+            accounts = attachMemoryBlock(sharedBlockId);
 
             decreaseBankBalance(accounts, 0, 100);
             readBankBalance(accounts, 0);
 
-            //detach memory block
-            shmdt(accounts);
+            detachMemoryBlock(accounts);
 
 			wait(NULL);
 
-            //destroy memory block
-            shmctl(sharedBlockId, IPC_RMID, NULL);
-
+            destroyMemoryBlock(sharedBlockId);
 			break;
 	}
 }
