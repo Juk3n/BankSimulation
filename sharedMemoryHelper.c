@@ -12,7 +12,7 @@ static int getSharedBlock() {
 }
 
 int* attachMemoryBlock() {
-    printf("Attached to exist SM\n");
+    printf("Attached to existing SM\n");
     int sharedBlockId = getSharedBlock();
     return shmat(sharedBlockId, NULL, 0);
 }
