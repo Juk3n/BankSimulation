@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <unistd.h>
+#include <sys/wait.h>
 
 void readBankBalance(int *accounts, int accountNumber) {
     printf("Bank Ballance (account %i) : %i\n", accountNumber, accounts[accountNumber]);
@@ -14,9 +16,21 @@ void decreaseBankBalance(int *accounts, int accountNumber, int amountOfMoney) {
 
 int main(int argc, char *argv[]) {
     int accounts[] = {0, 0, 0, 0, 0};
-    readBankBalance(accounts, 0);
-    increaseBankBalance(accounts, 0, 100);
-    readBankBalance(accounts, 0);
-    decreaseBankBalance(accounts, 1, 100);
-    readBankBalance(accounts, 1);
+
+    int id = fork();
+	switch(id) {
+		case -1:
+			printf("Error with fork");
+			return 1;
+			break;
+		case 0: // child
+            increaseBankBalance(accounts, 0, 100);
+            readBankBalance(accounts, 0);
+			break;
+		default: // parent
+            decreaseBankBalance(accounts, 0, 100);
+            readBankBalance(accounts, 0);
+			wait(NULL);
+			break;
+	}
 }
