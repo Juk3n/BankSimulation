@@ -12,11 +12,13 @@ static int getSharedBlock() {
 }
 
 int* attachMemoryBlock() {
+    printf("Attached to exist SM\n");
     int sharedBlockId = getSharedBlock();
     return shmat(sharedBlockId, NULL, 0);
 }
 
 void detachMemoryBlock(int* dataPointer) {
+    printf("Shared Memory disconnected!\n");
     shmdt(dataPointer);
 }
 

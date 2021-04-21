@@ -11,11 +11,11 @@ int main(int argc, char *argv[]) {
 		return 1;
 		break;
 	case 0: // child
-        execl("./zad1", "./zad1", "1", "3", "-4", NULL);
+        execl("./zad1", "./zad1", "2", "20", NULL);
 	    break;
 	default: // parent
-        execl("./zad1", "./zad1", "1", "20", NULL);
-	    wait(NULL);
+        execl("./zad1", "./zad1", "1", "2", "100", "1", NULL);
+        wait(NULL);
 		break;
 	}
 }

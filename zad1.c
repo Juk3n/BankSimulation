@@ -37,10 +37,16 @@ int main(int argc, char *argv[]) {
             readBankBalance(accounts, atoi(argv[1]));
         }
         else if(argc == 3) {
+            printf("[Before transaction] "); readBankBalance(accounts, atoi(argv[1]));
             changeBankBalance(accounts, atoi(argv[1]), atoi(argv[3]));
+            printf("[After transaction] "); readBankBalance(accounts, atoi(argv[1]));
+            printf("\n");
         }
         else if(argc == 4) {
+            printf("[Before transaction] "); readBankBalance(accounts, atoi(argv[1]));
             transferMoneyFromTo(accounts, atoi(argv[1]), atoi(argv[2]), atoi(argv[3]));
+            printf("[After transaction] "); readBankBalance(accounts, atoi(argv[1]));
+            printf("\n");
         }
         else {
             printf("Bad number of arguments!");
