@@ -13,37 +13,38 @@ void readBankBalance(int *accounts, int accountNumber) {
 }
 
 void changeBankBalance(int *accounts, int accountNumber, int amountOfMoney) {
+    printf("....Changig Bank Balance....\n");
     accounts[accountNumber] += amountOfMoney;
+}
+
+void transferMoneyFromTo(int *accounts, int accountFrom, int accountTo, int amountOfMoney) {
+    printf("....Transfering Money....\n");
+    accounts[accountFrom] -= amountOfMoney;
+    accounts[accountTo] += amountOfMoney;
 }
 
 int main(int argc, char *argv[]) {
     int *accounts;
-
     argc = argc - 1;
-    switch(argc) {
-    case 2: // read account
-        accounts = attachMemoryBlock();
 
-        for(int i = 0; i < atoi(argv[2]); i++) {
+    int iterations = 0;
+    if(argc == 2 || argc == 3) iterations = atoi(argv[2]);
+    if(argc == 4) iterations = atoi(argv[4]);
+
+    accounts = attachMemoryBlock();
+    for(int i = 0; i < iterations; i++) {
+        if(argc == 2) {
             readBankBalance(accounts, atoi(argv[1]));
         }
-
-        detachMemoryBlock(accounts);
-        break;
-
-    case 3: // increase/decrease bank account
-        accounts = attachMemoryBlock();
-
-        for(int i = 0; i < atoi(argv[2]); i++) {
+        else if(argc == 3) {
             changeBankBalance(accounts, atoi(argv[1]), atoi(argv[3]));
         }
-
-        detachMemoryBlock(accounts);
-        break;
-    case 4:
-        break;
-    default:
-        printf("Bad number of arguments!");
-        break;
+        else if(argc == 4) {
+            transferMoneyFromTo(accounts, atoi(argv[1]), atoi(argv[2]), atoi(argv[3]));
+        }
+        else {
+            printf("Bad number of arguments!");
+        }
     }
+    detachMemoryBlock(accounts);
 }
