@@ -1,9 +1,12 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include <sys/types.h>
+#include <sys/ipc.h>
+#include <sys/shm.h>
 
 void readBankBalance(int *accounts, int accountNumber) {
-    printf("Bank Ballance (account %i) : %i\n", accountNumber, accounts[accountNumber]);
+    printf("Bank Balance (account %i) : %i\n", accountNumber, accounts[accountNumber]);
 }
 
 void increaseBankBalance(int *accounts, int accountNumber, int amountOfMoney) {
@@ -15,7 +18,13 @@ void decreaseBankBalance(int *accounts, int accountNumber, int amountOfMoney) {
 }
 
 int main(int argc, char *argv[]) {
-    int accounts[] = {0, 0, 0, 0, 0};
+    int *accounts;
+
+    //get shared block
+    key_t key = ftok("zad1.c", 0);
+    if(key == -1) printf("shared memory error\n");
+    int sharedBlockId = shmget(key, 4096, 0644 | IPC_CREAT);
+
 
     int id = fork();
 	switch(id) {
@@ -24,13 +33,33 @@ int main(int argc, char *argv[]) {
 			return 1;
 			break;
 		case 0: // child
+
+            //attach memory block
+            accounts = shmat(sharedBlockId, NULL, 0);
+
             increaseBankBalance(accounts, 0, 100);
             readBankBalance(accounts, 0);
+
+            //detach memory block
+            shmdt(accounts);
+
 			break;
 		default: // parent
+
+            //attach memory block
+            accounts = shmat(sharedBlockId, NULL, 0);
+
             decreaseBankBalance(accounts, 0, 100);
             readBankBalance(accounts, 0);
+
+            //detach memory block
+            shmdt(accounts);
+
 			wait(NULL);
+
+            //destroy memory block
+            shmctl(sharedBlockId, IPC_RMID, NULL);
+
 			break;
 	}
 }
