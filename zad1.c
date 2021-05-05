@@ -30,23 +30,24 @@ int main(int argc, char *argv[]) {
     argc = argc - 1;
 
     int iterations = 0;
-    if(argc == 2 || argc == 3) iterations = atoi(argv[2]);
+    if(argc == 2) iterations = atoi(argv[2]);
+    if(argc == 3) iterations = atoi(argv[3]);
     if(argc == 4) iterations = atoi(argv[4]);
 
     accounts = attachMemoryBlock();
     for(int i = 0; i < iterations; i++) {
         semaphoreOpen();
-
         if(argc == 2) {
             readBankBalance(accounts, atoi(argv[1]));
         }
         else if(argc == 3) {
             printf("[Before transaction] "); readBankBalance(accounts, atoi(argv[1]));
-            changeBankBalance(accounts, atoi(argv[1]), atoi(argv[3]));
+            changeBankBalance(accounts, atoi(argv[1]), atoi(argv[2]));
             printf("[After transaction] "); readBankBalance(accounts, atoi(argv[1]));
             printf("\n");
         }
         else if(argc == 4) {
+            sleep(1);
             printf("[Before transaction] "); readBankBalance(accounts, atoi(argv[1]));
             transferMoneyFromTo(accounts, atoi(argv[1]), atoi(argv[2]), atoi(argv[3]));
             printf("[After transaction] "); readBankBalance(accounts, atoi(argv[1]));
@@ -56,6 +57,7 @@ int main(int argc, char *argv[]) {
             printf("Bad number of arguments!");
         }
         semaphoreClose();
+        sleep(1);
     }
     detachMemoryBlock(accounts);
 }

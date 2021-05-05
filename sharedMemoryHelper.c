@@ -23,7 +23,7 @@ void detachMemoryBlock(int* dataPointer) {
 }
 
 void destroyMemoryBlock() {
+    printf("Shared Memory removed!\n");
     int sharedBlockId = getSharedBlock();
     shmctl(sharedBlockId, IPC_RMID, NULL);
-    printf("Shared Memory removed!\n");
 }

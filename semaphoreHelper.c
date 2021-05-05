@@ -8,7 +8,7 @@ void semaphoreInit() {
     if (semaphoreSetId == -1) {
         printf("Cannot create semaphore\n");
     }
-    printf("semsetid: %i\n", semaphoreSetId);
+    printf("Created semaphore\n");
 
     int rc = semctl(semaphoreSetId, 0, SETVAL, 1);
     if (rc == -1) {
