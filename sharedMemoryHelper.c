@@ -1,13 +1,16 @@
 #include "sharedMemoryHelper.h"
+#include "error.h"
 
 #include <sys/types.h>
 #include <sys/ipc.h>
 #include <sys/shm.h>
 #include <stdio.h>
 
+int sizeOfSharedMememorySegment = 4096;
+
 static int getSharedBlock() {
     key_t key = ftok("zad1.c", 0);
-    if(key == -1) printf("shared memory error\n");
+    if(key == -1) printError("shared memory error\n");
     return shmget(key, sizeOfSharedMememorySegment, 0644 | IPC_CREAT);
 }
 

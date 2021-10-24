@@ -1,4 +1,5 @@
 #include "semaphoreHelper.h"
+#include "error.h"
 
 #include <sys/sem.h>
 #include <stdio.h>
@@ -6,13 +7,13 @@
 void semaphoreInit() {
     int semaphoreSetId = semget(250, 1, IPC_CREAT | 0644);
     if (semaphoreSetId == -1) {
-        printf("Cannot create semaphore\n");
+        printError("Cannot create semaphore\n");
     }
     printf("Created semaphore\n");
 
     int rc = semctl(semaphoreSetId, 0, SETVAL, 1);
     if (rc == -1) {
-        printf("Cannot set value to semaphore\n");
+        printError("Cannot set value to semaphore\n");
     }
 }
 

@@ -1,5 +1,6 @@
 #include "semaphoreHelper.h"
 #include "sharedMemoryHelper.h"
+#include "error.h"
 
 #include <stdio.h>
 #include <stddef.h>
@@ -23,11 +24,11 @@ void transerMoney() {
 
 int main(int argc, char *argv[]) {
 	if(argc != 2) {
-		printf("Program should have one argument!\n");
+		printError("Program should have one argument!\n");
 		return 0;
 	}
 	else if(atoi(argv[1]) <= 0) {
-		printf("Zero threads!\n");
+		printError("Zero threads!\n");
 		return 0;
 	}
 
@@ -41,7 +42,7 @@ int main(int argc, char *argv[]) {
 
     switch(id) {
     case -1:
-		printf("Error with fork");
+		printError("Error with fork");
 		return 1;
 		break;
 	case 0: // child

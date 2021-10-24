@@ -1,5 +1,6 @@
 #include "sharedMemoryHelper.h"
 #include "semaphoreHelper.h"
+#include "error.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -54,7 +55,7 @@ int main(int argc, char *argv[]) {
             printf("\n");
         }
         else {
-            printf("Bad number of arguments!");
+            printError("Bad number of arguments!");
         }
         semaphoreClose();
         sleep(1);
