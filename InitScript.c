@@ -55,6 +55,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	wait(NULL);
+	waitpid(id, NULL, 0);
 	destroyMemoryBlock();
 	return 0;
 }

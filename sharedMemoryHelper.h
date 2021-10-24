@@ -1,5 +1,7 @@
-#ifndef SEMAPHORE_HELPER_H
-#define SEMAPHORE_HELPER_H
+#ifndef SHARED_MEMORY_HELPER_H
+#define SHARED_MEMORY_HELPER_H
+
+int sizeOfSharedMememorySegment = 4096;
 
 int* attachMemoryBlock();
 void detachMemoryBlock(int* dataPointer);

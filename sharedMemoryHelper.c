@@ -8,7 +8,7 @@
 static int getSharedBlock() {
     key_t key = ftok("zad1.c", 0);
     if(key == -1) printf("shared memory error\n");
-    return shmget(key, 4096, 0644 | IPC_CREAT);
+    return shmget(key, sizeOfSharedMememorySegment, 0644 | IPC_CREAT);
 }
 
 int* attachMemoryBlock() {
