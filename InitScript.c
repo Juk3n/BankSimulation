@@ -28,15 +28,15 @@ int main(int argc, char *argv[]) {
 		return 0;
 	}
 	else if(atoi(argv[1]) <= 0) {
-		printError("Zero threads!\n");
+		printError("Zero processes!\n");
 		return 0;
 	}
 
 	semaphoreInit();
 
-	int numOfThreads = atoi(argv[1]) - 1;
+	int numOfProcesses = atoi(argv[1]) - 1;
 	int id = 1;
-	for(int i = 0; i < numOfThreads; i++) {
+	for(int i = 0; i < numOfProcesses; i++) {
 		if(id != 0) id = fork();
 	}
 
@@ -50,7 +50,7 @@ int main(int argc, char *argv[]) {
         transerMoney();
 	    break;
 	default: // parent
-		id = fork(); // additional thread created to clean stuff
+		id = fork(); // additional process created to clean stuff
 		if (id == 0) showBankAccount();
 		break;
 	}
